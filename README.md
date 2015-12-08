@@ -1,4 +1,4 @@
-B›LGE YILMAZ
+BiLGE YILMAZ
 030115236
-S›NYAL ›ﬁLEME
+SiNYAL iﬁLEME
 Proje : MATLAB ile sentezleme
