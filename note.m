@@ -1,3 +1,3 @@
 function[x,t]=note(genlik,frekans,vurus) % genliği frekansı ve vuruş değeri verilen notanın sinüs sinyalini çizdiren fonksiyon
-t=0:0,00025:vurus 
-x=genlik*sin(2*pi*frekans*t)
+t=0:1/10000:vurus; 
+x=genlik*sin(2*pi*frekans*t) %verilen bilgiler doğrultusunde sinus sinyali oluşturur
