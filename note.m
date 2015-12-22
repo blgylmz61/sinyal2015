@@ -1,3 +1,11 @@
-function[x,t]=note(genlik,frekans,vurus) % genliði frekansý ve vuruþ deðeri verilen notanýn sinüs sinyalini çizdiren fonksiyon
-t=0:1/10000:vurus; 
-x=genlik*sin(2*pi*frekans*t) %verilen bilgiler doðrultusunde sinus sinyali oluþturur
+function[z,t]=note(frekans,vurus)% genliði frekansý ve vuruþ deðeri verilen notanýn sinüs sinyalini çizdiren fonksiyon
+ fs=8192;
+ t=0:1/fs:((vurus)-(1/fs)); 
+ x=sin(2*pi*frekans*t); %verilen bilgiler doðrultusunde sinus sinyali oluþturur
+ a=length(x);
+A=linspace(0,(2*a)/8);
+B=linspace((2*a)/8,(3*a)/8);
+C=linspace((3*a)/8,(7*a)/8);
+D=linspace((7*a)/8,a);
+ zarf=[A B C D];
+ z=zvect([x,zarf]);
