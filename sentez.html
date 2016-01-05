@@ -1,0 +1,157 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>sentez</title><meta name="generator" content="MATLAB 7.10"><meta name="date" content="2016-01-04"><meta name="m-file" content="sentez"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1></h1><!--introduction--><!--/introduction--><pre class="codeinput"><span class="comment">%%dei&#351;kenine 2. s&uuml;t&uuml;n b de&#287;i&#351;kenine vr 3. sut&uuml;n c de&#287;i&#351;kenine atand&#305;.oktav</span>
+<span class="comment">%%de&#287;eriyle oynayabilmek ad&#305;na bir de&#287;i&#351;ken tan&#305;mlad&#305; ve de&#287;i&#351;kene 0 de&#287;eri</span>
+<span class="comment">%%atand&#305;. &ouml;rnekleme say&#305;s&#305;,durma s&uuml;rei ve geikme s&uuml;resi de&#287;i&#351;keni</span>
+<span class="comment">%%tan&#305;mland&#305; ve atamalar&#305; yap&#305;ld&#305;.</span>
+[nota,b,c]=textread(<span class="string">'Notalar.txt'</span>,<span class="string">'%s %s %s'</span>); <span class="comment">%Notalar.txt dosyasi okunarak her sutun bir de&#287;ere atandi</span>
+oktavdegeri=1; <span class="comment">%oktav degeri degistirilebilir</span>
+fs=11000;<span class="comment">%&ouml;rnekleme say&#305;s&#305; de&#287;i&#351;kene atand&#305;</span>
+ds=round(fs/100); <span class="comment">%durma s&uuml;resi hesapland&#305;</span>
+go=round(fs/10); <span class="comment">%gecikme s&uuml;resi hesapland&#305;</span>
+</pre><pre class="codeinput"><span class="comment">%%&ouml;rnekleme s&uuml;resi kadar s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu.notalar</span>
+<span class="comment">%%matrisi boyutlar&#305;nda s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu.durma s&uuml;resi</span>
+<span class="comment">%%boyutunda s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu.Dosyadan cell olarak okunan</span>
+<span class="comment">%%de&#287;i&#351;kenler double de&#287;ere d&ouml;n&uuml;&#351;t&uuml;r&uuml;ld&uuml; ve oktav de&#287;i&#351;kenine atand&#305;.</span>
+notalar=zeros(1,fs); <span class="comment">%&ouml;rnekleme s&uuml;resi kadar s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu</span>
+a=zeros(1,length(notalar)); <span class="comment">%notalar matrisi boyutlar&#305;nda s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu</span>
+durak=zeros(1,ds); <span class="comment">%durma s&uuml;resi boyutunda s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu</span>
+oktav=str2num(cell2mat(b)); <span class="comment">%dosyadan cell olarak okunan de&#287;i&#351;kenler double de&#287;ere d&ouml;n&uuml;&#351;t&uuml;r&uuml;ld&uuml;.</span>
+</pre><pre class="codeinput"><span class="keyword">for</span> i=1:(length(nota)) <span class="comment">%nota dizisi boyu kadar d&ouml;ng&uuml; ol&#351;turuldu</span>
+       vurus((i),1)=str2num(cell2mat(c(i,1))); <span class="comment">%dosyadan cell olarak okunan de&#287;i&#351;kenler double de&#287;ere d&ouml;n&uuml;&#351;t&uuml;r&uuml;ld&uuml;.</span>
+       frekans((i),1)=frek(nota((i),1),oktav((i),1),oktavdegeri); <span class="comment">%daha &ouml;nceden olu&#351;turulmu&#351; frek fonsiyonu &ccedil;a&#287;&#305;r&#305;ld&#305;</span>
+       [x,t]=note(frekans((i),1),vurus((i),1)); <span class="comment">%daha &ouml;nceden ol&#305;&#351;turulmu&#351; note fonksiyonu &ccedil;a&#287;&#305;r&#305;ld&#305;.</span>
+       notalar=[notalar durak x]; <span class="comment">%note fonsiyonunun d&ouml;nd&uuml;rd&uuml;&#287;&uuml; sinyal de&#287;eri aralar&#305;na daha &ouml;nce olu&#351;turulmu durak dizisi de yerle&#351;tirilerek birle&#351;tirildi</span>
+   <span class="keyword">end</span> <span class="comment">%for d&ouml;ng&uuml;s&uuml; bitirildi</span>
+   plot(notalar)
+</pre><img vspace="5" hspace="5" src="sentez_files/sentez_01.png" alt=""> <pre class="codeinput">   notalarecho=zeros(1,(length(notalar))); <span class="comment">%notalar matrisi boyutlar&#305;nda s&#305;f&#305;rdan olusan bir dizi olu&#351;turuldu</span>
+ <span class="keyword">for</span> i=1:(length(notalar)) <span class="comment">%notalar dizisi boyu kadar d&ouml;ng&uuml; ol&#351;turuldu</span>
+     f=(go+i); <span class="comment">%echo olu&#351;turmak i&ccedil;in gerekli olan gecikme s&uuml;resi d&ouml;ng&uuml;ye sokuldu</span>
+     <span class="keyword">if</span> f&lt;(length(notalar)) <span class="comment">%gecikme s&uuml;resi notalar matrisinin boyutunu ge&ccedil;mesin diye &#351;art sa&#287;land&#305;</span>
+     notalarecho(i)=notalar(i)*0.3+notalar(f); <span class="comment">%notalar matrisinin herbir de&#287;erinin %30'u al&#305;n&#305;p ge&ccedil;ikme s&uuml;resi kadar kayd&#305;r&#305;lm&#305;&#351;t&#305;r</span>
+     <span class="keyword">else</span>
+      notalarecho(i)=notalar(i)*0.3+0; <span class="comment">%notalar echo</span>
+     <span class="keyword">end</span>
+
+ <span class="keyword">end</span>
+  plot(notalarecho)
+</pre><img vspace="5" hspace="5" src="sentez_files/sentez_02.png" alt=""> <pre class="codeinput">  normalizenotalarecho=zeros(1,(length(notalar)));<span class="comment">%normalizasyon i&#351;lemi yap&#305;labilmesi i&ccedil;in de&#287;i&#351;ken tan&#305;mlanm&#305;&#351;t&#305;r</span>
+  normalizenotalarecho=notalarecho/max(abs(notalarecho));<span class="comment">%sinyalin tepe de&#287;erleri 1'e normalize edilmi&#351;tir.</span>
+
+  sound(normalizenotalarecho) <span class="comment">%sinyal &ccedil;ald&#305;r&#305;l&#305;yor.</span>
+    plot(normalizenotalarecho)
+</pre><img vspace="5" hspace="5" src="sentez_files/sentez_03.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.10<br></p></div><!--
+##### SOURCE BEGIN #####
+
+%%
+%%deişkenine 2. sütün b değişkenine vr 3. sutün c değişkenine atandı.oktav
+%%değeriyle oynayabilmek adına bir değişken tanımladı ve değişkene 0 değeri
+%%atandı. örnekleme sayısı,durma sürei ve geikme süresi değişkeni
+%%tanımlandı ve atamaları yapıldı.
+[nota,b,c]=textread('Notalar.txt','%s %s %s'); %Notalar.txt dosyasi okunarak her sutun bir değere atandi
+oktavdegeri=1; %oktav degeri degistirilebilir
+fs=11000;%örnekleme sayısı değişkene atandı
+ds=round(fs/100); %durma süresi hesaplandı
+go=round(fs/10); %gecikme süresi hesaplandı
+%%
+%%örnekleme süresi kadar sıfırdan olusan bir dizi oluşturuldu.notalar
+%%matrisi boyutlarında sıfırdan olusan bir dizi oluşturuldu.durma süresi
+%%boyutunda sıfırdan olusan bir dizi oluşturuldu.Dosyadan cell olarak okunan
+%%değişkenler double değere dönüştürüldü ve oktav değişkenine atandı.
+notalar=zeros(1,fs); %örnekleme süresi kadar sıfırdan olusan bir dizi oluşturuldu
+a=zeros(1,length(notalar)); %notalar matrisi boyutlarında sıfırdan olusan bir dizi oluşturuldu
+durak=zeros(1,ds); %durma süresi boyutunda sıfırdan olusan bir dizi oluşturuldu
+oktav=str2num(cell2mat(b)); %dosyadan cell olarak okunan değişkenler double değere dönüştürüldü.
+%%  
+for i=1:(length(nota)) %nota dizisi boyu kadar döngü olşturuldu
+       vurus((i),1)=str2num(cell2mat(c(i,1))); %dosyadan cell olarak okunan değişkenler double değere dönüştürüldü.
+       frekans((i),1)=frek(nota((i),1),oktav((i),1),oktavdegeri); %daha önceden oluşturulmuş frek fonsiyonu çağırıldı
+       [x,t]=note(frekans((i),1),vurus((i),1)); %daha önceden olışturulmuş note fonksiyonu çağırıldı.
+       notalar=[notalar durak x]; %note fonsiyonunun döndürdüğü sinyal değeri aralarına daha önce oluşturulmu durak dizisi de yerleştirilerek birleştirildi
+   end %for döngüsü bitirildi
+   plot(notalar)
+ %%
+   notalarecho=zeros(1,(length(notalar))); %notalar matrisi boyutlarında sıfırdan olusan bir dizi oluşturuldu
+ for i=1:(length(notalar)) %notalar dizisi boyu kadar döngü olşturuldu
+     f=(go+i); %echo oluşturmak için gerekli olan gecikme süresi döngüye sokuldu
+     if f<(length(notalar)) %gecikme süresi notalar matrisinin boyutunu geçmesin diye şart sağlandı
+     notalarecho(i)=notalar(i)*0.3+notalar(f); %notalar matrisinin herbir değerinin %30'u alınıp geçikme süresi kadar kaydırılmıştır
+     else 
+      notalarecho(i)=notalar(i)*0.3+0; %notalar echo
+     end
+    
+ end 
+  plot(notalarecho)
+ %%
+  normalizenotalarecho=zeros(1,(length(notalar)));%normalizasyon işlemi yapılabilmesi için değişken tanımlanmıştır
+  normalizenotalarecho=notalarecho/max(abs(notalarecho));%sinyalin tepe değerleri 1'e normalize edilmiştir.
+
+  sound(normalizenotalarecho) %sinyal çaldırılıyor.
+    plot(normalizenotalarecho)
+
+    
+##### SOURCE END #####
+--></body></html>
